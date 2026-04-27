@@ -11,6 +11,3 @@
 
 -- 5. Join lesson_join_order_items, lesson_join_orders, lesson_join_customers, and lesson_join_products
 --    to show customer_name, product_name, quantity, and sales.
-
--- 6. Explain in a comment why this join condition is dangerous:
---    ON c.region = c.region

@@ -1,25 +1,43 @@
 -- Solutions 08: PostgreSQL-Specific Features
 
 -- 1.
-INSERT INTO lesson_feature_enrollments (learner_email, learner_name, preferred_track)
-VALUES ('john@example.com', 'John', 'reporting')
+INSERT INTO lesson_order_reviews (row_id, order_id, product_name, review_status)
+SELECT
+    row_id,
+    order_id,
+    product_name,
+    'needs-review'
+FROM superstore
+WHERE profit < 0
+ORDER BY profit
+OFFSET 1
+LIMIT 1
 RETURNING *;
 
 -- 2.
-INSERT INTO lesson_feature_enrollments (learner_email, learner_name, preferred_track)
-VALUES ('john@example.com', 'John Tan', 'advanced-sql')
-ON CONFLICT (learner_email)
+INSERT INTO lesson_order_reviews (row_id, order_id, product_name, review_status)
+SELECT
+    row_id,
+    order_id,
+    product_name,
+    'reviewed'
+FROM superstore
+WHERE profit < 0
+ORDER BY profit
+OFFSET 1
+LIMIT 1
+ON CONFLICT (row_id)
 DO UPDATE SET
-    learner_name = EXCLUDED.learner_name,
-    preferred_track = EXCLUDED.preferred_track
+    review_status = EXCLUDED.review_status,
+    reviewed_at = CURRENT_TIMESTAMP
 RETURNING *;
 
 -- 3.
 SELECT
     generated_day::DATE AS generated_day
 FROM generate_series(
-    DATE '2026-06-01',
-    DATE '2026-06-05',
+    DATE '2017-06-01',
+    DATE '2017-06-05',
     INTERVAL '1 day'
 ) AS generated_day;
 

@@ -105,12 +105,12 @@ Recommended flow:
 - [04-database-objects.sql](lessons/04-database-objects.sql): function, procedure, index, view, materialized view, trigger
 - [05-ddl-dml.sql](lessons/05-ddl-dml.sql): `CREATE`, `ALTER`, `INSERT`, `UPDATE`, `DELETE`, `UPSERT`, constraints
 - [06-performance.sql](lessons/06-performance.sql): `EXPLAIN`, `EXPLAIN ANALYZE`, reading query plans
-- [07-data-types.sql](lessons/07-data-types.sql): `TEXT`, `VARCHAR`, `NUMERIC`, `BOOLEAN`, `UUID`, `JSONB`, arrays, `COALESCE`
-- [08-postgresql-features.sql](lessons/08-postgresql-features.sql): `RETURNING`, `ON CONFLICT`, `generate_series()`, `FILTER`, `DISTINCT ON`, `ILIKE`, `ANY`, `unnest()`
+- [07-data-types.sql](lessons/07-data-types.sql): `TEXT`, `VARCHAR`, `NUMERIC`, `BOOLEAN`, `UUID`, `JSONB`, arrays, `COALESCE` using Superstore product profiles
+- [08-postgresql-features.sql](lessons/08-postgresql-features.sql): `RETURNING`, `ON CONFLICT`, `generate_series()`, `FILTER`, `DISTINCT ON`, `ILIKE`, `ANY`, `unnest()` using Superstore orders
 - [09-joins.sql](lessons/09-joins.sql): `INNER JOIN`, `LEFT JOIN`, self join, anti join, and bad join examples
 - [10-subqueries.sql](lessons/10-subqueries.sql): scalar subqueries, correlated subqueries, derived tables, `EXISTS`, `NOT EXISTS`
-- [11-schema-design.sql](lessons/11-schema-design.sql): primary keys, foreign keys, unique constraints, check constraints, defaults
-- [12-transactions.sql](lessons/12-transactions.sql): `BEGIN`, `COMMIT`, `ROLLBACK`, savepoints, transaction safety
+- [11-schema-design.sql](lessons/11-schema-design.sql): Superstore customer/product dimensions, order-item facts, foreign keys, check constraints, defaults
+- [12-transactions.sql](lessons/12-transactions.sql): `BEGIN`, `COMMIT`, `ROLLBACK`, savepoints, and transaction safety with order profit adjustments
 
 ### Exercises
 

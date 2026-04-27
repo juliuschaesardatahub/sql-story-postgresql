@@ -1,11 +1,11 @@
 -- Exercise 08: PostgreSQL-Specific Features
 -- Write your answers below each question.
 
--- 1. Insert a new learner into lesson_feature_enrollments and use RETURNING to show the new row.
+-- 1. Insert one loss-making superstore row into lesson_order_reviews and use RETURNING.
 
--- 2. Use INSERT ... ON CONFLICT to update an existing learner_email.
+-- 2. Use INSERT ... ON CONFLICT to update the review_status for an existing row_id.
 
--- 3. Use generate_series() to return every date from 2026-06-01 to 2026-06-05.
+-- 3. Use generate_series() to return every date from 2017-06-01 to 2017-06-05.
 
 -- 4. Write one query that uses FILTER to show:
 --    total orders, profitable orders, and total sales in the South region.

@@ -56,7 +56,3 @@ JOIN lesson_join_customers c
 JOIN lesson_join_products p
     ON oi.product_id = p.product_id
 ORDER BY oi.sales DESC, c.customer_name;
-
--- 6.
--- The condition ON c.region = c.region is always true for non-NULL rows,
--- so it behaves like a cross join and multiplies rows incorrectly.

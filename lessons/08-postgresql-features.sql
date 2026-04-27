@@ -1,36 +1,53 @@
 -- Lesson 08: PostgreSQL-Specific Query Features
--- Goal: learn practical PostgreSQL features that make everyday SQL easier.
+-- Goal: learn practical PostgreSQL features using superstore and periode data.
 
 -- 1. RETURNING gives back rows changed by INSERT.
-DROP TABLE IF EXISTS lesson_feature_enrollments;
+DROP TABLE IF EXISTS lesson_order_reviews;
 
-CREATE TABLE lesson_feature_enrollments (
-    enrollment_id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    learner_email TEXT NOT NULL UNIQUE,
-    learner_name TEXT NOT NULL,
-    preferred_track TEXT NOT NULL,
-    enrolled_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+CREATE TABLE lesson_order_reviews (
+    review_id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    row_id INTEGER NOT NULL UNIQUE,
+    order_id VARCHAR(50) NOT NULL,
+    product_name TEXT NOT NULL,
+    review_status TEXT NOT NULL,
+    reviewed_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
-INSERT INTO lesson_feature_enrollments (learner_email, learner_name, preferred_track)
-VALUES ('ana@example.com', 'Ana', 'analytics')
-RETURNING enrollment_id, learner_email, enrolled_at;
+INSERT INTO lesson_order_reviews (row_id, order_id, product_name, review_status)
+SELECT
+    row_id,
+    order_id,
+    product_name,
+    'needs-review' AS review_status
+FROM superstore
+WHERE profit < 0
+ORDER BY profit
+LIMIT 1
+RETURNING review_id, row_id, order_id, review_status, reviewed_at;
 
 -- 2. ON CONFLICT supports upsert workflows.
-INSERT INTO lesson_feature_enrollments (learner_email, learner_name, preferred_track)
-VALUES ('ana@example.com', 'Ana Maria', 'performance')
-ON CONFLICT (learner_email)
+INSERT INTO lesson_order_reviews (row_id, order_id, product_name, review_status)
+SELECT
+    row_id,
+    order_id,
+    product_name,
+    'reviewed' AS review_status
+FROM superstore
+WHERE profit < 0
+ORDER BY profit
+LIMIT 1
+ON CONFLICT (row_id)
 DO UPDATE SET
-    learner_name = EXCLUDED.learner_name,
-    preferred_track = EXCLUDED.preferred_track
-RETURNING enrollment_id, learner_email, learner_name, preferred_track;
+    review_status = EXCLUDED.review_status,
+    reviewed_at = CURRENT_TIMESTAMP
+RETURNING review_id, row_id, order_id, review_status;
 
 -- 3. generate_series() is useful for test data and calendars.
 SELECT
     generated_day::DATE AS generated_day
 FROM generate_series(
-    DATE '2026-05-01',
-    DATE '2026-05-07',
+    DATE '2017-05-01',
+    DATE '2017-05-07',
     INTERVAL '1 day'
 ) AS generated_day;
 
@@ -72,7 +89,8 @@ LIMIT 10;
 
 -- 8. unnest() expands arrays into rows.
 SELECT
-    lesson_code,
-    unnest(tags) AS tag_name
-FROM lesson_data_types
-ORDER BY lesson_code, tag_name;
+    product_id,
+    unnest(ARRAY[category, sub_category, region]) AS product_attribute
+FROM superstore
+ORDER BY product_id, product_attribute
+LIMIT 30;

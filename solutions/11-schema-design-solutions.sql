@@ -1,32 +1,47 @@
 -- Solutions 11: Schema Design and Constraints
 
 -- 1.
-INSERT INTO lesson_learners (learner_email, learner_name, learner_region)
-VALUES ('omar@example.com', 'Omar', 'South');
+INSERT INTO lesson_dim_customers (customer_id, customer_name, segment, region)
+VALUES ('TEST-CUST-001', 'Practice Customer', 'Consumer', 'West');
 
 -- 2.
-INSERT INTO lesson_courses (course_code, course_name, level_name, price, is_published)
-VALUES ('PG-401', 'Advanced Query Design', 'advanced', 129.00, TRUE);
+INSERT INTO lesson_dim_products (product_id, product_name, category, sub_category)
+VALUES ('TEST-PROD-001', 'Practice Product', 'Office Supplies', 'Paper');
 
 -- 3.
-INSERT INTO lesson_enrollments (learner_id, course_id, progress_pct, status_name)
-VALUES (4, 4, 5, 'active');
+INSERT INTO lesson_fact_order_items (
+    row_id,
+    order_id,
+    customer_id,
+    product_id,
+    order_date,
+    sales,
+    quantity,
+    discount,
+    profit
+)
+VALUES (
+    999999,
+    'TEST-ORDER-001',
+    'TEST-CUST-001',
+    'TEST-PROD-001',
+    DATE '2017-01-01',
+    100.00,
+    2,
+    0.10,
+    20.00
+);
 
 -- 4.
 SELECT
-    l.learner_name,
-    c.course_code,
-    c.course_name,
-    e.status_name
-FROM lesson_enrollments e
-JOIN lesson_learners l
-    ON e.learner_id = l.learner_id
-JOIN lesson_courses c
-    ON e.course_id = c.course_id
-ORDER BY l.learner_name, c.course_code;
-
--- 5.
--- It prevents the same learner from being enrolled in the same course more than once.
-
--- 6.
-\d lesson_enrollments
+    f.order_id,
+    c.customer_name,
+    p.product_name,
+    f.sales,
+    f.profit
+FROM lesson_fact_order_items f
+JOIN lesson_dim_customers c
+    ON f.customer_id = c.customer_id
+JOIN lesson_dim_products p
+    ON f.product_id = p.product_id
+ORDER BY f.order_id;

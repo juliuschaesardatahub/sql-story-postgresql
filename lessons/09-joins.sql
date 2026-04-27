@@ -8,30 +8,23 @@ DROP TABLE IF EXISTS lesson_join_customers;
 DROP TABLE IF EXISTS lesson_join_products;
 
 CREATE TABLE lesson_join_customers AS
-SELECT DISTINCT
+SELECT DISTINCT ON (customer_id)
     customer_id,
     customer_name,
     region
 FROM superstore
-ORDER BY customer_id
+ORDER BY customer_id, order_date
 LIMIT 12;
 
-CREATE TABLE lesson_join_products AS
-SELECT DISTINCT
-    product_id,
-    product_name,
-    category
-FROM superstore
-ORDER BY product_id
-LIMIT 15;
-
 CREATE TABLE lesson_join_orders AS
-SELECT DISTINCT
-    order_id,
-    customer_id,
-    order_date
-FROM superstore
-ORDER BY order_id
+SELECT DISTINCT ON (s.order_id)
+    s.order_id,
+    s.customer_id,
+    s.order_date
+FROM superstore s
+JOIN lesson_join_customers c
+    ON s.customer_id = c.customer_id
+ORDER BY s.order_id, s.order_date
 LIMIT 20;
 
 CREATE TABLE lesson_join_order_items AS
@@ -47,11 +40,38 @@ WHERE order_id IN (
     SELECT order_id
     FROM lesson_join_orders
 )
-  AND product_id IN (
-    SELECT product_id
-    FROM lesson_join_products
-)
 LIMIT 40;
+
+CREATE TABLE lesson_join_products AS
+WITH matched_products AS (
+    SELECT DISTINCT ON (s.product_id)
+        s.product_id,
+        s.product_name,
+        s.category
+    FROM superstore s
+    JOIN lesson_join_order_items oi
+        ON s.product_id = oi.product_id
+    ORDER BY s.product_id, s.order_date
+),
+extra_products AS (
+    SELECT DISTINCT ON (s.product_id)
+        s.product_id,
+        s.product_name,
+        s.category
+    FROM superstore s
+    WHERE NOT EXISTS (
+        SELECT 1
+        FROM matched_products mp
+        WHERE mp.product_id = s.product_id
+    )
+    ORDER BY s.product_id, s.order_date
+    LIMIT 5
+)
+SELECT *
+FROM matched_products
+UNION ALL
+SELECT *
+FROM extra_products;
 
 -- 2. INNER JOIN returns matched rows only.
 SELECT

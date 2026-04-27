@@ -1,77 +1,103 @@
 -- Lesson 11: Schema Design and Constraints
--- Goal: learn how to model related tables with keys and validation rules.
+-- Goal: learn how to model Superstore data into related tables with keys.
 
 -- 1. Drop practice tables in dependency order.
-DROP TABLE IF EXISTS lesson_enrollments;
-DROP TABLE IF EXISTS lesson_courses;
-DROP TABLE IF EXISTS lesson_learners;
+DROP TABLE IF EXISTS lesson_fact_order_items;
+DROP TABLE IF EXISTS lesson_dim_products;
+DROP TABLE IF EXISTS lesson_dim_customers;
 
 -- 2. Create parent tables with primary keys, unique constraints, and defaults.
-CREATE TABLE lesson_learners (
-    learner_id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    learner_email TEXT NOT NULL UNIQUE,
-    learner_name TEXT NOT NULL,
-    learner_region TEXT NOT NULL,
+CREATE TABLE lesson_dim_customers (
+    customer_id VARCHAR(50) PRIMARY KEY,
+    customer_name TEXT NOT NULL,
+    segment TEXT NOT NULL CHECK (segment IN ('Consumer', 'Corporate', 'Home Office')),
+    region TEXT NOT NULL,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE lesson_courses (
-    course_id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    course_code TEXT NOT NULL UNIQUE,
-    course_name TEXT NOT NULL,
-    level_name TEXT NOT NULL CHECK (level_name IN ('novice', 'intermediate', 'advanced')),
-    price NUMERIC(10, 2) NOT NULL CHECK (price >= 0),
-    is_published BOOLEAN NOT NULL DEFAULT FALSE
+CREATE TABLE lesson_dim_products (
+    product_id VARCHAR(50) PRIMARY KEY,
+    product_name TEXT NOT NULL,
+    category TEXT NOT NULL,
+    sub_category TEXT NOT NULL
 );
 
--- 3. Create a child table with foreign keys and a composite unique rule.
-CREATE TABLE lesson_enrollments (
-    enrollment_id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    learner_id INTEGER NOT NULL REFERENCES lesson_learners (learner_id),
-    course_id INTEGER NOT NULL REFERENCES lesson_courses (course_id),
-    enrolled_on DATE NOT NULL DEFAULT CURRENT_DATE,
-    progress_pct NUMERIC(5, 2) NOT NULL DEFAULT 0 CHECK (progress_pct BETWEEN 0 AND 100),
-    status_name TEXT NOT NULL DEFAULT 'active' CHECK (status_name IN ('active', 'completed', 'cancelled')),
-    UNIQUE (learner_id, course_id)
+-- 3. Create a child table with foreign keys and validation rules.
+CREATE TABLE lesson_fact_order_items (
+    row_id INTEGER PRIMARY KEY,
+    order_id VARCHAR(50) NOT NULL,
+    customer_id VARCHAR(50) NOT NULL REFERENCES lesson_dim_customers (customer_id),
+    product_id VARCHAR(50) NOT NULL REFERENCES lesson_dim_products (product_id),
+    order_date DATE NOT NULL,
+    sales NUMERIC(12, 4) NOT NULL CHECK (sales >= 0),
+    quantity INTEGER NOT NULL CHECK (quantity > 0),
+    discount NUMERIC(4, 2) NOT NULL CHECK (discount BETWEEN 0 AND 1),
+    profit NUMERIC(12, 4) NOT NULL
 );
 
--- 4. Insert sample learners and courses.
-INSERT INTO lesson_learners (learner_email, learner_name, learner_region)
-VALUES
-    ('maya@example.com', 'Maya', 'West'),
-    ('ravi@example.com', 'Ravi', 'East'),
-    ('lina@example.com', 'Lina', 'Central');
+-- 4. Insert sample dimension rows from superstore.
+INSERT INTO lesson_dim_customers (customer_id, customer_name, segment, region)
+SELECT DISTINCT ON (customer_id)
+    customer_id,
+    customer_name,
+    segment,
+    region
+FROM superstore
+ORDER BY customer_id
+LIMIT 25;
 
-INSERT INTO lesson_courses (course_code, course_name, level_name, price, is_published)
-VALUES
-    ('PG-101', 'PostgreSQL Foundations', 'novice', 39.00, TRUE),
-    ('PG-201', 'Practical Reporting', 'intermediate', 69.00, TRUE),
-    ('PG-301', 'Performance Tuning', 'advanced', 99.00, FALSE);
+INSERT INTO lesson_dim_products (product_id, product_name, category, sub_category)
+SELECT DISTINCT ON (product_id)
+    product_id,
+    product_name,
+    category,
+    sub_category
+FROM superstore
+ORDER BY product_id
+LIMIT 40;
 
--- 5. Insert child rows that must satisfy foreign keys.
-INSERT INTO lesson_enrollments (learner_id, course_id, progress_pct, status_name)
-VALUES
-    (1, 1, 100, 'completed'),
-    (1, 2, 45, 'active'),
-    (2, 1, 15, 'active'),
-    (3, 2, 0, 'active');
+-- 5. Insert fact rows that must satisfy foreign keys.
+INSERT INTO lesson_fact_order_items (
+    row_id,
+    order_id,
+    customer_id,
+    product_id,
+    order_date,
+    sales,
+    quantity,
+    discount,
+    profit
+)
+SELECT
+    s.row_id,
+    s.order_id,
+    s.customer_id,
+    s.product_id,
+    s.order_date,
+    s.sales,
+    s.quantity,
+    s.discount,
+    s.profit
+FROM superstore s
+JOIN lesson_dim_customers c
+    ON s.customer_id = c.customer_id
+JOIN lesson_dim_products p
+    ON s.product_id = p.product_id
+ORDER BY s.row_id
+LIMIT 50;
 
 -- 6. Review the normalized result with joins.
 SELECT
-    l.learner_name,
-    l.learner_email,
-    c.course_code,
-    c.course_name,
-    e.progress_pct,
-    e.status_name
-FROM lesson_enrollments e
-JOIN lesson_learners l
-    ON e.learner_id = l.learner_id
-JOIN lesson_courses c
-    ON e.course_id = c.course_id
-ORDER BY l.learner_name, c.course_code;
-
--- 7. Check the table definitions after creation.
-\d lesson_learners
-\d lesson_courses
-\d lesson_enrollments
+    f.order_id,
+    c.customer_name,
+    c.region,
+    p.category,
+    p.product_name,
+    f.sales,
+    f.profit
+FROM lesson_fact_order_items f
+JOIN lesson_dim_customers c
+    ON f.customer_id = c.customer_id
+JOIN lesson_dim_products p
+    ON f.product_id = p.product_id
+ORDER BY f.order_date, f.order_id;

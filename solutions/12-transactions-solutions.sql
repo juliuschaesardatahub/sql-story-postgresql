@@ -3,47 +3,43 @@
 -- 1.
 BEGIN;
 
-UPDATE lesson_wallets
-SET balance = balance - 50.00
-WHERE owner_name = 'Asha';
+UPDATE lesson_order_profit_adjustments
+SET profit = profit - 10.00
+WHERE row_id = 1;
 
-UPDATE lesson_wallets
-SET balance = balance + 50.00
-WHERE owner_name = 'Cora';
+UPDATE lesson_order_profit_adjustments
+SET profit = profit + 10.00
+WHERE row_id = 3;
 
 COMMIT;
 
 -- 2.
 BEGIN;
 
-UPDATE lesson_wallets
-SET balance = balance + 20.00
-WHERE owner_name = 'Bimo';
+UPDATE lesson_order_profit_adjustments
+SET review_status = 'reviewing'
+WHERE row_id = 2;
 
-SAVEPOINT after_bonus;
+SAVEPOINT after_status_update;
 
-UPDATE lesson_wallets
-SET balance = balance - 200.00
-WHERE owner_name = 'Bimo';
+UPDATE lesson_order_profit_adjustments
+SET profit = profit - 200.00
+WHERE row_id = 2;
 
-ROLLBACK TO SAVEPOINT after_bonus;
+ROLLBACK TO SAVEPOINT after_status_update;
 
 COMMIT;
 
 -- 3.
 BEGIN;
 
-UPDATE lesson_wallets
-SET balance = balance + 999.00
-WHERE owner_name = 'Cora';
+UPDATE lesson_order_profit_adjustments
+SET profit = profit + 999.00
+WHERE row_id = 3;
 
 ROLLBACK;
 
 -- 4.
 SELECT *
-FROM lesson_wallets
-ORDER BY wallet_id;
-
--- 5.
--- A transaction keeps related changes atomic, so either all steps succeed together
--- or all of them are undone to avoid inconsistent balances.
+FROM lesson_order_profit_adjustments
+ORDER BY row_id;
