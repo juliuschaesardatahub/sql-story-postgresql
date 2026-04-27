@@ -5,7 +5,7 @@
 - `periode`: a calendar table loaded from `data/period.csv`
 - `superstore`: a retail sales table loaded from `data/superstore.csv`
 
-This repo is designed as a learning journey, not just a Docker setup. You can start with simple `SELECT` queries, move into grouped analysis, and then work with joins, CTEs, window functions, database objects, and query tuning.
+This repo is designed as a learning journey, not just a Docker setup. You can start with simple `SELECT` queries, move into grouped analysis, and then work with joins, CTEs, window functions, PostgreSQL-specific features, schema design, transactions, and query tuning.
 
 ## Project Structure
 
@@ -24,14 +24,26 @@ sql-story-postgresql/
 |   |-- 03-advanced-exercises.sql
 |   |-- 04-database-objects-exercises.sql
 |   |-- 05-ddl-dml-exercises.sql
-|   `-- 06-performance-exercises.sql
+|   |-- 06-performance-exercises.sql
+|   |-- 07-data-types-exercises.sql
+|   |-- 08-postgresql-features-exercises.sql
+|   |-- 09-joins-exercises.sql
+|   |-- 10-subqueries-exercises.sql
+|   |-- 11-schema-design-exercises.sql
+|   `-- 12-transactions-exercises.sql
 |-- lessons/
 |   |-- 01-novice.sql
 |   |-- 02-intermediate.sql
 |   |-- 03-advanced.sql
 |   |-- 04-database-objects.sql
 |   |-- 05-ddl-dml.sql
-|   `-- 06-performance.sql
+|   |-- 06-performance.sql
+|   |-- 07-data-types.sql
+|   |-- 08-postgresql-features.sql
+|   |-- 09-joins.sql
+|   |-- 10-subqueries.sql
+|   |-- 11-schema-design.sql
+|   `-- 12-transactions.sql
 |-- scripts/
 |   |-- backup-db.ps1
 |   |-- build.ps1
@@ -46,7 +58,13 @@ sql-story-postgresql/
     |-- 03-advanced-solutions.sql
     |-- 04-database-objects-solutions.sql
     |-- 05-ddl-dml-solutions.sql
-    `-- 06-performance-solutions.sql
+    |-- 06-performance-solutions.sql
+    |-- 07-data-types-solutions.sql
+    |-- 08-postgresql-features-solutions.sql
+    |-- 09-joins-solutions.sql
+    |-- 10-subqueries-solutions.sql
+    |-- 11-schema-design-solutions.sql
+    `-- 12-transactions-solutions.sql
 ```
 
 ## What You Will Learn
@@ -56,6 +74,11 @@ sql-story-postgresql/
 - Advanced: CTEs, window functions, ranking, running totals, business analysis
 - Database objects: functions, procedures, indexes, views, materialized views, triggers
 - Database design: `CREATE`, `ALTER`, `INSERT`, `UPDATE`, `DELETE`, `UPSERT`, constraints
+- Data types: `TEXT`, `VARCHAR`, `NUMERIC`, `BOOLEAN`, `UUID`, `JSONB`, arrays, `NULL`
+- PostgreSQL features: `RETURNING`, `ON CONFLICT`, `generate_series()`, `FILTER`, `DISTINCT ON`, `ILIKE`
+- Relational querying: join types, self joins, anti joins, and subqueries with `EXISTS`
+- Schema design: primary keys, foreign keys, unique rules, defaults, and check constraints
+- Transactions: `BEGIN`, `COMMIT`, `ROLLBACK`, and savepoints
 - Performance basics: `EXPLAIN`, `EXPLAIN ANALYZE`, and query plan inspection
 
 ## Learning Workspace
@@ -82,6 +105,12 @@ Recommended flow:
 - [04-database-objects.sql](lessons/04-database-objects.sql): function, procedure, index, view, materialized view, trigger
 - [05-ddl-dml.sql](lessons/05-ddl-dml.sql): `CREATE`, `ALTER`, `INSERT`, `UPDATE`, `DELETE`, `UPSERT`, constraints
 - [06-performance.sql](lessons/06-performance.sql): `EXPLAIN`, `EXPLAIN ANALYZE`, reading query plans
+- [07-data-types.sql](lessons/07-data-types.sql): `TEXT`, `VARCHAR`, `NUMERIC`, `BOOLEAN`, `UUID`, `JSONB`, arrays, `COALESCE`
+- [08-postgresql-features.sql](lessons/08-postgresql-features.sql): `RETURNING`, `ON CONFLICT`, `generate_series()`, `FILTER`, `DISTINCT ON`, `ILIKE`, `ANY`, `unnest()`
+- [09-joins.sql](lessons/09-joins.sql): `INNER JOIN`, `LEFT JOIN`, self join, anti join, and bad join examples
+- [10-subqueries.sql](lessons/10-subqueries.sql): scalar subqueries, correlated subqueries, derived tables, `EXISTS`, `NOT EXISTS`
+- [11-schema-design.sql](lessons/11-schema-design.sql): primary keys, foreign keys, unique constraints, check constraints, defaults
+- [12-transactions.sql](lessons/12-transactions.sql): `BEGIN`, `COMMIT`, `ROLLBACK`, savepoints, transaction safety
 
 ### Exercises
 
@@ -91,6 +120,12 @@ Recommended flow:
 - [04-database-objects-exercises.sql](exercises/04-database-objects-exercises.sql): 6 practice prompts for functions, procedures, indexes, views, materialized views, and triggers
 - [05-ddl-dml-exercises.sql](exercises/05-ddl-dml-exercises.sql): 7 schema and data-change practice prompts
 - [06-performance-exercises.sql](exercises/06-performance-exercises.sql): 6 plan-reading and index-tuning prompts
+- [07-data-types-exercises.sql](exercises/07-data-types-exercises.sql): 6 questions on PostgreSQL types, JSONB, arrays, and `NULL`
+- [08-postgresql-features-exercises.sql](exercises/08-postgresql-features-exercises.sql): 7 prompts for PostgreSQL-only query features
+- [09-joins-exercises.sql](exercises/09-joins-exercises.sql): 6 join practice prompts including anti joins and self joins
+- [10-subqueries-exercises.sql](exercises/10-subqueries-exercises.sql): 6 subquery and `EXISTS` prompts
+- [11-schema-design-exercises.sql](exercises/11-schema-design-exercises.sql): 6 practice prompts for keys, constraints, and normalized tables
+- [12-transactions-exercises.sql](exercises/12-transactions-exercises.sql): 5 prompts for transaction control and savepoints
 
 ### Solutions
 
@@ -100,6 +135,12 @@ Recommended flow:
 - [04-database-objects-solutions.sql](solutions/04-database-objects-solutions.sql)
 - [05-ddl-dml-solutions.sql](solutions/05-ddl-dml-solutions.sql)
 - [06-performance-solutions.sql](solutions/06-performance-solutions.sql)
+- [07-data-types-solutions.sql](solutions/07-data-types-solutions.sql)
+- [08-postgresql-features-solutions.sql](solutions/08-postgresql-features-solutions.sql)
+- [09-joins-solutions.sql](solutions/09-joins-solutions.sql)
+- [10-subqueries-solutions.sql](solutions/10-subqueries-solutions.sql)
+- [11-schema-design-solutions.sql](solutions/11-schema-design-solutions.sql)
+- [12-transactions-solutions.sql](solutions/12-transactions-solutions.sql)
 
 ## Prerequisites
 
@@ -801,7 +842,13 @@ Practice goals:
 3. Continue with [03-advanced.sql](lessons/03-advanced.sql), then solve all 10 questions in [03-advanced-exercises.sql](exercises/03-advanced-exercises.sql), and check [03-advanced-solutions.sql](solutions/03-advanced-solutions.sql).
 4. Study [04-database-objects.sql](lessons/04-database-objects.sql), then attempt [04-database-objects-exercises.sql](exercises/04-database-objects-exercises.sql), and compare with [04-database-objects-solutions.sql](solutions/04-database-objects-solutions.sql).
 5. Practice schema changes and data modification in [05-ddl-dml.sql](lessons/05-ddl-dml.sql), then complete [05-ddl-dml-exercises.sql](exercises/05-ddl-dml-exercises.sql), and review [05-ddl-dml-solutions.sql](solutions/05-ddl-dml-solutions.sql).
-6. Finish with [06-performance.sql](lessons/06-performance.sql), then work through [06-performance-exercises.sql](exercises/06-performance-exercises.sql) and check [06-performance-solutions.sql](solutions/06-performance-solutions.sql).
+6. Learn how PostgreSQL stores and interprets values with [07-data-types.sql](lessons/07-data-types.sql), then complete [07-data-types-exercises.sql](exercises/07-data-types-exercises.sql) and review [07-data-types-solutions.sql](solutions/07-data-types-solutions.sql).
+7. Explore PostgreSQL-only query features in [08-postgresql-features.sql](lessons/08-postgresql-features.sql), then try [08-postgresql-features-exercises.sql](exercises/08-postgresql-features-exercises.sql) and compare with [08-postgresql-features-solutions.sql](solutions/08-postgresql-features-solutions.sql).
+8. Strengthen relational thinking with [09-joins.sql](lessons/09-joins.sql), then solve [09-joins-exercises.sql](exercises/09-joins-exercises.sql) and check [09-joins-solutions.sql](solutions/09-joins-solutions.sql).
+9. Practice query decomposition in [10-subqueries.sql](lessons/10-subqueries.sql), then work through [10-subqueries-exercises.sql](exercises/10-subqueries-exercises.sql) and compare with [10-subqueries-solutions.sql](solutions/10-subqueries-solutions.sql).
+10. Study constraints and table relationships in [11-schema-design.sql](lessons/11-schema-design.sql), then attempt [11-schema-design-exercises.sql](exercises/11-schema-design-exercises.sql) and review [11-schema-design-solutions.sql](solutions/11-schema-design-solutions.sql).
+11. Learn transaction safety with [12-transactions.sql](lessons/12-transactions.sql), then complete [12-transactions-exercises.sql](exercises/12-transactions-exercises.sql) and compare with [12-transactions-solutions.sql](solutions/12-transactions-solutions.sql).
+12. Finish with plan reading and index-aware tuning in [06-performance.sql](lessons/06-performance.sql), then work through [06-performance-exercises.sql](exercises/06-performance-exercises.sql) and check [06-performance-solutions.sql](solutions/06-performance-solutions.sql).
 
 ## Notes
 
@@ -810,6 +857,7 @@ Practice goals:
 - If you want a completely fresh database volume and startup flow, use [reset-db.ps1](scripts/reset-db.ps1).
 - If you change [01-load-data.sql](init-db/01-load-data.sql), use `docker compose down -v` before starting again.
 - The table name is `periode`, while the source CSV file is `period.csv`.
+- [07-data-types.sql](lessons/07-data-types.sql) enables the `pgcrypto` extension so `gen_random_uuid()` works on a fresh database.
 
 ## Additional Resources
 
