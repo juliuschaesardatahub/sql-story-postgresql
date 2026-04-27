@@ -122,10 +122,10 @@ Recommended flow:
 - [06-performance-exercises.sql](exercises/06-performance-exercises.sql): 6 plan-reading and index-tuning prompts
 - [07-data-types-exercises.sql](exercises/07-data-types-exercises.sql): 6 questions on PostgreSQL types, JSONB, arrays, and `NULL`
 - [08-postgresql-features-exercises.sql](exercises/08-postgresql-features-exercises.sql): 7 prompts for PostgreSQL-only query features
-- [09-joins-exercises.sql](exercises/09-joins-exercises.sql): 6 join practice prompts including anti joins and self joins
+- [09-joins-exercises.sql](exercises/09-joins-exercises.sql): 5 join practice prompts including anti joins and self joins
 - [10-subqueries-exercises.sql](exercises/10-subqueries-exercises.sql): 6 subquery and `EXISTS` prompts
-- [11-schema-design-exercises.sql](exercises/11-schema-design-exercises.sql): 6 practice prompts for keys, constraints, and normalized tables
-- [12-transactions-exercises.sql](exercises/12-transactions-exercises.sql): 5 prompts for transaction control and savepoints
+- [11-schema-design-exercises.sql](exercises/11-schema-design-exercises.sql): 4 practice prompts for keys, constraints, and normalized tables
+- [12-transactions-exercises.sql](exercises/12-transactions-exercises.sql): 4 prompts for transaction control and savepoints
 
 ### Solutions
 
