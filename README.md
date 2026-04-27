@@ -114,18 +114,18 @@ Recommended flow:
 
 ### Exercises
 
-- [01-novice-exercises.sql](exercises/01-novice-exercises.sql): 7 beginner questions
-- [02-intermediate-exercises.sql](exercises/02-intermediate-exercises.sql): 7 grouped-analysis and join questions
-- [03-advanced-exercises.sql](exercises/03-advanced-exercises.sql): 10 harder questions with CTEs, windows, ranking, and month-over-month analysis
-- [04-database-objects-exercises.sql](exercises/04-database-objects-exercises.sql): 6 practice prompts for functions, procedures, indexes, views, materialized views, and triggers
-- [05-ddl-dml-exercises.sql](exercises/05-ddl-dml-exercises.sql): 7 schema and data-change practice prompts
-- [06-performance-exercises.sql](exercises/06-performance-exercises.sql): 6 plan-reading and index-tuning prompts
-- [07-data-types-exercises.sql](exercises/07-data-types-exercises.sql): 6 questions on PostgreSQL types, JSONB, arrays, and `NULL`
-- [08-postgresql-features-exercises.sql](exercises/08-postgresql-features-exercises.sql): 7 prompts for PostgreSQL-only query features
-- [09-joins-exercises.sql](exercises/09-joins-exercises.sql): 5 join practice prompts including anti joins and self joins
-- [10-subqueries-exercises.sql](exercises/10-subqueries-exercises.sql): 6 subquery and `EXISTS` prompts
-- [11-schema-design-exercises.sql](exercises/11-schema-design-exercises.sql): 4 practice prompts for keys, constraints, and normalized tables
-- [12-transactions-exercises.sql](exercises/12-transactions-exercises.sql): 4 prompts for transaction control and savepoints
+- [01-novice-exercises.sql](exercises/01-novice-exercises.sql): beginner `SELECT`, filter, sort, and aggregate practice
+- [02-intermediate-exercises.sql](exercises/02-intermediate-exercises.sql): grouped analysis, `HAVING`, `CASE`, and date-table joins
+- [03-advanced-exercises.sql](exercises/03-advanced-exercises.sql): CTEs, window functions, ranking, and month-over-month analysis
+- [04-database-objects-exercises.sql](exercises/04-database-objects-exercises.sql): functions, procedures, indexes, views, materialized views, and triggers
+- [05-ddl-dml-exercises.sql](exercises/05-ddl-dml-exercises.sql): schema changes, data modification, constraints, and upserts
+- [06-performance-exercises.sql](exercises/06-performance-exercises.sql): plan reading and index-tuning practice
+- [07-data-types-exercises.sql](exercises/07-data-types-exercises.sql): PostgreSQL types, JSONB, arrays, time zones, and `NULL`
+- [08-postgresql-features-exercises.sql](exercises/08-postgresql-features-exercises.sql): PostgreSQL-only query features such as `RETURNING`, `ON CONFLICT`, and `DISTINCT ON`
+- [09-joins-exercises.sql](exercises/09-joins-exercises.sql): join practice including inner joins, left joins, anti joins, and self joins
+- [10-subqueries-exercises.sql](exercises/10-subqueries-exercises.sql): scalar subqueries, correlated subqueries, derived tables, and `EXISTS`
+- [11-schema-design-exercises.sql](exercises/11-schema-design-exercises.sql): keys, constraints, and normalized Superstore-style tables
+- [12-transactions-exercises.sql](exercises/12-transactions-exercises.sql): transaction control, savepoints, commits, and rollbacks
 
 ### Solutions
 
@@ -839,7 +839,7 @@ Practice goals:
 
 1. Start with [01-novice.sql](lessons/01-novice.sql), then attempt [01-novice-exercises.sql](exercises/01-novice-exercises.sql), and compare with [01-novice-solutions.sql](solutions/01-novice-solutions.sql).
 2. Move to [02-intermediate.sql](lessons/02-intermediate.sql), then complete [02-intermediate-exercises.sql](exercises/02-intermediate-exercises.sql), and review [02-intermediate-solutions.sql](solutions/02-intermediate-solutions.sql).
-3. Continue with [03-advanced.sql](lessons/03-advanced.sql), then solve all 10 questions in [03-advanced-exercises.sql](exercises/03-advanced-exercises.sql), and check [03-advanced-solutions.sql](solutions/03-advanced-solutions.sql).
+3. Continue with [03-advanced.sql](lessons/03-advanced.sql), then solve [03-advanced-exercises.sql](exercises/03-advanced-exercises.sql), and check [03-advanced-solutions.sql](solutions/03-advanced-solutions.sql).
 4. Study [04-database-objects.sql](lessons/04-database-objects.sql), then attempt [04-database-objects-exercises.sql](exercises/04-database-objects-exercises.sql), and compare with [04-database-objects-solutions.sql](solutions/04-database-objects-solutions.sql).
 5. Practice schema changes and data modification in [05-ddl-dml.sql](lessons/05-ddl-dml.sql), then complete [05-ddl-dml-exercises.sql](exercises/05-ddl-dml-exercises.sql), and review [05-ddl-dml-solutions.sql](solutions/05-ddl-dml-solutions.sql).
 6. Learn how PostgreSQL stores and interprets values with [07-data-types.sql](lessons/07-data-types.sql), then complete [07-data-types-exercises.sql](exercises/07-data-types-exercises.sql) and review [07-data-types-solutions.sql](solutions/07-data-types-solutions.sql).
